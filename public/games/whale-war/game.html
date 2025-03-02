@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Whale War</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #87CEEB;
+            height: 100vh;
+        }
+        #gameCanvas {
+            background: #1E90FF;
+            border: 2px solid #000;
+        }
+        .score {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: white;
+            font-size: 24px;
+            font-family: Arial, sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <div class="score">Score: <span id="score">0</span></div>
+    <canvas id="gameCanvas" width="600" height="400"></canvas>
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const scoreElement = document.getElementById('score');
+        let score = 0;
+        let whale = { x: 50, y: 200, width: 50, height: 30 };
+        let fish = [];
+        let fishSpeed = 2;
+
+        function drawWhale() {
+            ctx.fillStyle = 'gray';
+            ctx.fillRect(whale.x, whale.y, whale.width, whale.height);
+        }
+
+        function drawFish() {
+            ctx.fillStyle = 'orange';
+            fish.forEach(f => ctx.fillRect(f.x, f.y, 20, 10));
+        }
+
+        function updateFish() {
+            fish.forEach(f => f.x -= fishSpeed);
+            if (Math.random() < 0.02) {
+                fish.push({ x: canvas.width, y: Math.random() * (canvas.height - 10) });
+            }
+            fish = fish.filter(f => f.x > -20);
+        }
+
+        function checkCollision() {
+            fish.forEach((f, index) => {
+                if (whale.x < f.x + 20 && whale.x + whale.width > f.x && whale.y < f.y + 10 && whale.y + whale.height > f.y) {
+                    fish.splice(index, 1);
+                    score += 10;
+                    scoreElement.innerText = score;
+                }
+            });
+        }
+
+        function update() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawWhale();
+            drawFish();
+            updateFish();
+            checkCollision();
+            requestAnimationFrame(update);
+        }
+
+        document.addEventListener('keydown', (event) => {
+            const step = 20;
+            if (event.code === 'ArrowUp' && whale.y > 0) whale.y -= step;
+            if (event.code === 'ArrowDown' && whale.y < canvas.height - whale.height) whale.y += step;
+        });
+
+        update();
+    </script>
+</body>
+</html>

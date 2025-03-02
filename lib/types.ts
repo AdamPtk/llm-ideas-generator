@@ -1,0 +1,9 @@
+export interface Game {
+  id: string;
+  name: string;
+  userId?: string;
+  prompt: string;
+  html: string;
+  model: string;
+  createdAt: number;
+}
