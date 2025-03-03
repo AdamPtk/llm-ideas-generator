@@ -1,11 +1,15 @@
 "use client";
 
 import { ClerkLoading, ClerkLoaded, SignedOut, SignInButton, SignedIn } from "@clerk/nextjs";
-import { Loader2 } from "lucide-react";
+import { Loader2, Moon, Sun } from "lucide-react";
+import { useTheme } from "next-themes";
 
-import { UserProfile } from "./UserProfile";
+import { UserProfile } from "./user-profile";
 import { Button } from "./ui/button";
+
 export const Header = () => {
+  const { theme, setTheme } = useTheme();
+
   return (
     <nav className="flex justify-end items-center p-4">
       <ClerkLoading>
@@ -23,6 +27,14 @@ export const Header = () => {
           <UserProfile />
         </SignedIn>
       </ClerkLoaded>
+      <Button
+        className="ml-4"
+        variant="outline"
+        size="sm"
+        onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+      >
+        {theme === "dark" ? <Sun className="size-4" /> : <Moon className="size-4" />}
+      </Button>
     </nav>
   );
 };

@@ -1,5 +1,5 @@
 import { Idea } from "@/lib/types";
-import IdeaCard from "./IdeaCard";
+import IdeaCard from "./idea-card";
 
 interface IdeasGridProps {
   ideas: Idea[];

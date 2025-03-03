@@ -41,7 +41,7 @@ const IdeaForm = ({ onSubmit, isLoading }: IdeaFormProps) => {
                 <Sparkles className="h-12 w-12 text-primary mb-4" />
                 <h3 className="text-xl font-semibold mb-2">Sign in to Generate Ideas</h3>
                 <p className="text-muted-foreground mb-6">
-                  Create an account to start generating amazing ideas with AI
+                  Create an account to start generating your ideas with AI
                 </p>
                 <SignInButton mode="modal">
                   <Button size="lg" className="w-full sm:w-auto">

@@ -5,9 +5,9 @@ import { v4 as uuidv4 } from "uuid";
 import { useUser } from "@clerk/nextjs";
 
 import { Idea } from "@/lib/types";
-import LoadingOverlay from "@/app/components/LoadingOverlay";
-import IdeaForm from "@/app/components/IdeaForm";
-import IdeasGrid from "@/app/components/IdeasGrid";
+import LoadingOverlay from "@/app/components/loading-overlay";
+import IdeaForm from "@/app/components/idea-form";
+import IdeasGrid from "@/app/components/idea-grid";
 
 export default function Home() {
   const [ideas, setIdeas] = useState<Idea[]>([]);

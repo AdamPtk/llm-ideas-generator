@@ -3,11 +3,11 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { Idea } from "@/lib/types";
-import { LoadingState } from "./components/LoadingState";
-import { ErrorState } from "./components/ErrorState";
-import { IdeaHeader } from "./components/IdeaHeader";
-import { IdeaDetails } from "./components/IdeaDetails";
-import { IdeaPreview } from "./components/IdeaPreview";
+import { LoadingState } from "./components/loading-state";
+import { ErrorState } from "./components/error-state";
+import { IdeaHeader } from "./components/idea-header";
+import { IdeaDetails } from "./components/idea-details";
+import { IdeaPreview } from "./components/idea-preview";
 
 export default function IdeaPage() {
   const params = useParams();
