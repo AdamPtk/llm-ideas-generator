@@ -7,51 +7,51 @@ import { useParams } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 
-import { Game } from "@/lib/types";
+import { Idea } from "@/lib/types";
 
-export default function GamePage() {
+export default function IdeaPage() {
   const params = useParams();
-  const gameId = params.gameId as string;
-  const [game, setGame] = useState<Game | null>(null);
+  const ideaId = params.ideaId as string;
+  const [idea, setIdea] = useState<Idea | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [showFullPrompt, setShowFullPrompt] = useState(false);
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const gameContainerRef = useRef<HTMLDivElement>(null);
+  const ideaContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const fetchGame = async () => {
+    const fetchIdea = async () => {
       try {
-        const response = await fetch(`/api/games/${gameId}`);
+        const response = await fetch(`/api/ideas/${ideaId}`);
 
         if (!response.ok) {
           if (response.status === 404) {
-            setError("Game not found");
+            setError("Idea not found");
           } else {
-            setError("Failed to load game");
+            setError("Failed to load idea");
           }
           return;
         }
 
         const data = await response.json();
-        setGame(data.game);
+        setIdea(data.idea);
       } catch (err) {
-        console.error("Error fetching game:", err);
-        setError("An error occurred while loading the game");
+        console.error("Error fetching idea:", err);
+        setError("An error occurred while loading the idea");
       } finally {
         setIsLoading(false);
       }
     };
 
-    fetchGame();
-  }, [gameId]);
+    fetchIdea();
+  }, [ideaId]);
 
   useEffect(() => {
-    if (!isLoading && game && iframeRef.current) {
+    if (!isLoading && idea && iframeRef.current) {
       iframeRef.current.focus();
     }
-  }, [isLoading, game]);
+  }, [isLoading, idea]);
 
   const truncateText = (text: string, maxLength: number) => {
     if (text.length <= maxLength) return text;
@@ -63,10 +63,10 @@ export default function GamePage() {
   };
 
   const handleToggleFullscreen = () => {
-    if (!gameContainerRef.current) return;
+    if (!ideaContainerRef.current) return;
 
     if (!document.fullscreenElement) {
-      gameContainerRef.current
+      ideaContainerRef.current
         .requestFullscreen()
         .then(() => {
           setIsFullscreen(true);
@@ -109,25 +109,25 @@ export default function GamePage() {
       <div className="container mx-auto px-4 py-8 flex justify-center items-center min-h-[50vh]">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
-          <p className="mt-4">Loading game...</p>
+          <p className="mt-4">Loading idea...</p>
         </div>
       </div>
     );
   }
 
-  if (error || !game) {
+  if (error || !idea) {
     return (
       <div className="container mx-auto px-4 py-8">
         <Link href="/">
           <Button variant="outline" size="sm" className="mb-4">
-            <ArrowLeft className="mr-2 h-4 w-4" /> Back to Games
+            <ArrowLeft className="mr-2 h-4 w-4" /> Back to Ideas
           </Button>
         </Link>
         <div className="text-center py-12">
-          <h1 className="text-2xl font-bold mb-4">Game Not Found</h1>
-          <p className="mb-6">{error || "Sorry, we couldn't find the game you're looking for."}</p>
+          <h1 className="text-2xl font-bold mb-4">Idea Not Found</h1>
+          <p className="mb-6">{error || "Sorry, we couldn't find the idea you're looking for."}</p>
           <Link href="/">
-            <Button>Return to Game Generator</Button>
+            <Button>Return to Idea Generator</Button>
           </Link>
         </div>
       </div>
@@ -138,17 +138,17 @@ export default function GamePage() {
     <div className="container mx-auto px-4 py-8">
       <Link href="/">
         <Button variant="outline" size="sm" className="mb-4">
-          <ArrowLeft className="mr-2 h-4 w-4" /> Back to Games
+          <ArrowLeft className="mr-2 h-4 w-4" /> Back to Ideas
         </Button>
       </Link>
 
-      <h1 className="text-2xl font-bold mb-4">{game.name}</h1>
+      <h1 className="text-2xl font-bold mb-4">{idea.name}</h1>
 
       <div className="mb-4">
-        <h2 className="text-xl font-semibold mb-2">About this game</h2>
+        <h2 className="text-xl font-semibold mb-2">About this idea</h2>
         <p className="text-muted-foreground">
-          <b>Prompt:</b> {showFullPrompt ? game.prompt : truncateText(game.prompt, 100)}
-          {game.prompt.length > 100 && (
+          <b>Prompt:</b> {showFullPrompt ? idea.prompt : truncateText(idea.prompt, 100)}
+          {idea.prompt.length > 100 && (
             <Button
               variant="link"
               size="sm"
@@ -160,16 +160,16 @@ export default function GamePage() {
           )}
         </p>
         <p className="text-muted-foreground">
-          <b>Model:</b> {game.model}
+          <b>Model:</b> {idea.model}
         </p>
         <p className="text-sm text-muted-foreground mt-4">
-          Created on {new Date(game.createdAt).toLocaleDateString()}
+          Created on {new Date(idea.createdAt).toLocaleDateString()}
         </p>
       </div>
 
       <div
         className="bg-background border rounded-lg p-4 mb-6 h-[800px] relative"
-        ref={gameContainerRef}
+        ref={ideaContainerRef}
       >
         <Button
           variant="outline"
@@ -182,9 +182,9 @@ export default function GamePage() {
         </Button>
         <iframe
           ref={iframeRef}
-          src={`/games/${gameId}/game.html`}
+          src={`/ideas/${ideaId}/idea.html`}
           className="w-full h-full"
-          title={game.name}
+          title={idea.name}
           style={{ border: "none" }}
           tabIndex={0}
         />

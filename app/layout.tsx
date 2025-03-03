@@ -6,8 +6,8 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Games Generator",
-  description: "Generate playable games using AI",
+  title: "Ideas Generator",
+  description: "Generate ideas using AI",
 };
 
 export default function RootLayout({

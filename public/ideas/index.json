@@ -1,5 +1,13 @@
 [
   {
+    "id": "cbb0352d-45e8-4f97-bd1a-51506293835e",
+    "name": "Flying Fish Challenge",
+    "prompt": "ff",
+    "model": "gpt-4o",
+    "createdAt": 1741001836849,
+    "html": ""
+  },
+  {
     "id": "whale-war",
     "name": "Whale War",
     "prompt": "ww",

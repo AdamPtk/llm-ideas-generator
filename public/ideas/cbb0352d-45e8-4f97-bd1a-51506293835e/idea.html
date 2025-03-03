@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flying Fish Challenge</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+        }
+        #gameCanvas {
+            background: lightblue;
+            display: block;
+            margin: 0 auto;
+            border: 2px solid #333;
+        }
+        #score {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 20px;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div id="score">Score: 0</div>
+    <canvas id="gameCanvas" width="800" height="400"></canvas>
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const scoreDisplay = document.getElementById('score');
+        let fishY = canvas.height / 2;
+        let fishVelocity = 0;
+        const gravity = 0.5;
+        const jump = -10;
+        const fishWidth = 50;
+        const fishHeight = 30;
+        let score = 0;
+        let obstacles = [];
+        let gameOver = false;
+
+        document.addEventListener('keydown', function(event) {
+            if (event.code === 'Space') {
+                fishVelocity = jump;
+            }
+        });
+
+        function createObstacle() {
+            const height = Math.floor(Math.random() * (canvas.height - 100)) + 50;
+            obstacles.push({
+                x: canvas.width,
+                y: canvas.height - height,
+                width: 50,
+                height: height
+            });
+        }
+
+        function gameLoop() {
+            if (gameOver) return;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            fishVelocity += gravity;
+            fishY += fishVelocity;
+
+            ctx.fillStyle = 'orange';
+            ctx.fillRect(50, fishY, fishWidth, fishHeight);
+
+            if (fishY + fishHeight > canvas.height || fishY < 0) {
+                gameOver = true;
+                alert('Game Over! Your Score: ' + score);
+                document.location.reload();
+            }
+
+            obstacles.forEach((obstacle, index) => {
+                obstacle.x -= 5;
+                ctx.fillStyle = 'green';
+                ctx.fillRect(obstacle.x, obstacle.y, obstacle.width, obstacle.height);
+
+                if (obstacle.x + obstacle.width < 0) {
+                    obstacles.splice(index, 1);
+                    score++;
+                    scoreDisplay.textContent = 'Score: ' + score;
+                }
+
+                if (
+                    50 < obstacle.x + obstacle.width &&
+                    50 + fishWidth > obstacle.x &&
+                    fishY < obstacle.y + obstacle.height &&
+                    fishY + fishHeight > obstacle.y
+                ) {
+                    gameOver = true;
+                    alert('Game Over! Your Score: ' + score);
+                    document.location.reload();
+                }
+            });
+
+            if (Math.random() < 0.02) {
+                createObstacle();
+            }
+
+            requestAnimationFrame(gameLoop);
+        }
+
+        gameLoop();
+    </script>
+</body>
+</html>

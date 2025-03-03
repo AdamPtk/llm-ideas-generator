@@ -1,4 +1,4 @@
-export interface Game {
+export interface Idea {
   id: string;
   name: string;
   userId?: string;
