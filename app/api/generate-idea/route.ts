@@ -37,7 +37,7 @@ export async function POST(req: Request) {
     
     Return your response as a JSON object with the following structure:
     {
-      "name": "idea Name",
+      "name": "Idea Name",
       "html": "Complete HTML including CSS and JavaScript"
     }`;
 

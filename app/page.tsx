@@ -13,11 +13,37 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 
 import { Idea } from "@/lib/types";
 
+const loadingMessages = [
+  "Brewing creative ideas...",
+  "Exploring possibilities...",
+  "Assembling the pieces...",
+  "Making it awesome...",
+  "Almost there...",
+];
+
 export default function Home() {
   const [prompt, setPrompt] = useState("");
   const [ideas, setIdeas] = useState<Idea[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingIdeas, setIsLoadingIdeas] = useState(true);
+  const [loadingMessageIndex, setLoadingMessageIndex] = useState(0);
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+
+    if (isLoading) {
+      interval = setInterval(() => {
+        setLoadingMessageIndex(prev => (prev + 1) % loadingMessages.length);
+      }, 4000);
+    }
+
+    return () => {
+      if (interval) {
+        clearInterval(interval);
+      }
+      setLoadingMessageIndex(0);
+    };
+  }, [isLoading]);
 
   useEffect(() => {
     const fetchIdeas = async () => {
@@ -90,6 +116,25 @@ export default function Home() {
 
   return (
     <main className="container mx-auto px-4 py-8">
+      {isLoading && (
+        <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center">
+          <div className="text-center">
+            <Loader2 className="h-12 w-12 animate-spin text-primary mx-auto" />
+            <div className="relative mt-4 h-[28px] w-[280px] mx-auto">
+              {loadingMessages.map((message, index) => (
+                <p
+                  key={index}
+                  className={`absolute inset-0 transition-opacity duration-300 flex items-center justify-center font-semibold ${
+                    loadingMessageIndex === index ? "opacity-100" : "opacity-0"
+                  }`}
+                >
+                  {message}
+                </p>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
       <h1 className="text-3xl font-bold text-center mb-4">Ideas Generator</h1>
       <p className="text-lg text-center text-muted-foreground mb-8">
         Created to explore, compare and agregate constantly improving Large Language Models
@@ -100,7 +145,7 @@ export default function Home() {
         <form onSubmit={handleSubmit}>
           <CardContent className="mt-8">
             <Textarea
-              placeholder="What’s on your mind? (e.g., 'Create a snake game where the snake is blue and the food is red')"
+              placeholder="What's on your mind? (e.g., 'Create a snake game where the snake is blue and the food is red')"
               value={prompt}
               onChange={e => setPrompt(e.target.value)}
               className="min-h-[120px]"
