@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
+import { useUser } from "@clerk/nextjs";
 
 import { Idea } from "@/lib/types";
 import LoadingOverlay from "@/app/components/LoadingOverlay";
@@ -12,6 +13,9 @@ export default function Home() {
   const [ideas, setIdeas] = useState<Idea[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingIdeas, setIsLoadingIdeas] = useState(true);
+  const { user } = useUser();
+
+  console.log(user);
 
   useEffect(() => {
     const fetchIdeas = async () => {
@@ -51,7 +55,7 @@ export default function Home() {
 
       const newIdea: Idea = {
         id: uuidv4(),
-        userId: "1",
+        userId: user?.id || "",
         name: data.name,
         prompt,
         model: "gpt-4o",

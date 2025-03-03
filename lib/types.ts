@@ -1,7 +1,7 @@
 export interface Idea {
   id: string;
   name: string;
-  userId?: string;
+  userId: string;
   prompt: string;
   html: string;
   model: string;

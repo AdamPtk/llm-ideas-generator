@@ -45,6 +45,7 @@ export async function POST(req: Request) {
     const metaPath = path.join(ideaDir, "meta.json");
     const metadata = {
       id: idea.id,
+      userId: idea.userId,
       name: idea.name,
       prompt: idea.prompt,
       model: idea.model,
@@ -64,6 +65,7 @@ export async function POST(req: Request) {
 
     ideas.unshift({
       id: idea.id,
+      userId: idea.userId,
       name: idea.name,
       prompt: idea.prompt,
       model: idea.model,

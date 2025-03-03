@@ -1,0 +1,3 @@
+Create an iteractive periodic table where users can hover elements to see properties and animations for atomic structure. Use html, js and css.
+
+Make it visually appealing.
