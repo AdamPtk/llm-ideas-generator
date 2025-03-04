@@ -8,6 +8,7 @@ import { ErrorState } from "./components/error-state";
 import { IdeaHeader } from "./components/idea-header";
 import { IdeaDetails } from "./components/idea-details";
 import { IdeaPreview } from "./components/idea-preview";
+import { IdeaHtml } from "./components/idea-html";
 
 export default function IdeaPage() {
   const params = useParams();
@@ -43,6 +44,12 @@ export default function IdeaPage() {
     fetchIdea();
   }, [ideaId]);
 
+  const handleHtmlChange = (newHtml: string) => {
+    if (idea) {
+      setIdea({ ...idea, html: newHtml });
+    }
+  };
+
   if (isLoading) {
     return <LoadingState />;
   }
@@ -56,6 +63,7 @@ export default function IdeaPage() {
       <IdeaHeader idea={idea} />
       <IdeaDetails idea={idea} />
       <IdeaPreview idea={idea} ideaId={ideaId} />
+      <IdeaHtml idea={idea} onHtmlChange={handleHtmlChange} />
     </div>
   );
 }
