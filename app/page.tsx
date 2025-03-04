@@ -60,7 +60,7 @@ export default function Home() {
         prompt,
         model: "gpt-4o",
         html: data.html,
-        createdAt: Date.now(),
+        createdAt: new Date().toISOString(),
       };
 
       const saveResponse = await fetch("/api/ideas", {

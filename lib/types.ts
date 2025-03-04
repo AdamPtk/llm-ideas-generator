@@ -5,5 +5,5 @@ export interface Idea {
   prompt: string;
   html: string;
   model: string;
-  createdAt: number;
+  createdAt: string;
 }
