@@ -8,7 +8,7 @@ interface IdeaPreviewProps {
   ideaId: string;
 }
 
-export const IdeaPreview = ({ idea, ideaId }: IdeaPreviewProps) => {
+export const IdeaPreview = ({ idea }: IdeaPreviewProps) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const ideaContainerRef = useRef<HTMLDivElement>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -77,7 +77,7 @@ export const IdeaPreview = ({ idea, ideaId }: IdeaPreviewProps) => {
       </Button>
       <iframe
         ref={iframeRef}
-        src={`/ideas/${ideaId}/idea.html`}
+        src={`/ideas/${idea.id}/idea.html`}
         className="w-full h-full"
         title={idea.name}
         style={{ border: "none" }}
