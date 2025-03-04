@@ -9,11 +9,11 @@ interface IdeaCardProps {
 const IdeaCard = ({ idea }: IdeaCardProps) => {
   return (
     <Link href={`/${idea.id}`}>
-      <Card className="h-full cursor-pointer hover:shadow-md transition-shadow">
+      <Card className="h-full cursor-pointer hover:shadow-md transition-shadow flex flex-col">
         <CardHeader>
           <CardTitle>{idea.name}</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="flex-grow">
           <p className="text-sm text-muted-foreground line-clamp-3">
             <b>Prompt:</b> {idea.prompt}
           </p>

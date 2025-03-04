@@ -8,14 +8,14 @@ import { Idea } from "@/lib/types";
 import LoadingOverlay from "@/app/components/loading-overlay";
 import IdeaForm from "@/app/components/idea-form";
 import IdeasGrid from "@/app/components/idea-grid";
+import { AIModel } from "@/lib/config/ai-models";
+import { MODEL_CONFIGS } from "@/lib/config/ai-models";
 
 export default function Home() {
   const [ideas, setIdeas] = useState<Idea[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingIdeas, setIsLoadingIdeas] = useState(true);
   const { user } = useUser();
-
-  console.log(user);
 
   useEffect(() => {
     const fetchIdeas = async () => {
@@ -35,7 +35,7 @@ export default function Home() {
     fetchIdeas();
   }, []);
 
-  const handleSubmit = async (prompt: string) => {
+  const handleSubmit = async (prompt: string, model: string) => {
     setIsLoading(true);
 
     try {
@@ -44,7 +44,7 @@ export default function Home() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ prompt }),
+        body: JSON.stringify({ prompt, model }),
       });
 
       if (!response.ok) {
@@ -58,7 +58,7 @@ export default function Home() {
         userId: user?.id || "",
         name: data.name,
         prompt,
-        model: "gpt-4o",
+        model: MODEL_CONFIGS[model as AIModel]?.displayName || model,
         html: data.html,
         createdAt: new Date().toISOString(),
       };
