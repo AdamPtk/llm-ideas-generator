@@ -77,7 +77,7 @@ export const IdeaPreview = ({ idea, ideaId }: IdeaPreviewProps) => {
       </Button>
       <iframe
         ref={iframeRef}
-        src={`/ideas/${ideaId}/idea.html`}
+        src={`data:text/html;charset=utf-8,${encodeURIComponent(idea.html)}`}
         className="w-full h-full"
         title={idea.name}
         style={{ border: "none" }}

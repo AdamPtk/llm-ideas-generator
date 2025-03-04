@@ -1,7 +1,0 @@
-{
-  "id": "classic-snake-game",
-  "name": "Classic Snake Game",
-  "prompt": "Create a snake game",
-  "model": "gpt-4o",
-  "createdAt": 1740747115157
-}
