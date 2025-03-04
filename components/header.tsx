@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { ClerkLoading, ClerkLoaded, SignedOut, SignInButton, SignedIn } from "@clerk/nextjs";
 import { Loader2, Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
@@ -9,6 +10,11 @@ import { Button } from "./ui/button";
 
 export const Header = () => {
   const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   return (
     <nav className="flex justify-end items-center p-4">
@@ -27,14 +33,16 @@ export const Header = () => {
           <UserProfile />
         </SignedIn>
       </ClerkLoaded>
-      <Button
-        className="ml-4"
-        variant="outline"
-        size="sm"
-        onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-      >
-        {theme === "dark" ? <Sun className="size-4" /> : <Moon className="size-4" />}
-      </Button>
+      {mounted && (
+        <Button
+          className="ml-4"
+          variant="outline"
+          size="sm"
+          onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+        >
+          {theme === "dark" ? <Sun className="size-4" /> : <Moon className="size-4" />}
+        </Button>
+      )}
     </nav>
   );
 };
