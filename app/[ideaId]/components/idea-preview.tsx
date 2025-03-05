@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { Maximize, Minimize } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Idea } from "@/lib/types";
+import { useDebounce } from "@/lib/hooks/useDebounce";
 
 interface IdeaPreviewProps {
   idea: Idea;
@@ -12,6 +13,30 @@ export const IdeaPreview = ({ idea }: IdeaPreviewProps) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const ideaContainerRef = useRef<HTMLDivElement>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [blobUrl, setBlobUrl] = useState<string>("");
+  const debouncedHtml = useDebounce(idea.html, 1000);
+
+  useEffect(() => {
+    return () => {
+      if (blobUrl) {
+        URL.revokeObjectURL(blobUrl);
+      }
+    };
+  }, [blobUrl]);
+
+  useEffect(() => {
+    if (blobUrl) {
+      URL.revokeObjectURL(blobUrl);
+    }
+
+    const blob = new Blob([debouncedHtml], { type: "text/html" });
+    const newBlobUrl = URL.createObjectURL(blob);
+    setBlobUrl(newBlobUrl);
+
+    if (iframeRef.current) {
+      iframeRef.current.src = newBlobUrl;
+    }
+  }, [debouncedHtml]);
 
   useEffect(() => {
     if (iframeRef.current) {
@@ -77,7 +102,7 @@ export const IdeaPreview = ({ idea }: IdeaPreviewProps) => {
       </Button>
       <iframe
         ref={iframeRef}
-        src={`data:text/html;charset=utf-8,${encodeURIComponent(idea.html)}`}
+        src={blobUrl || "about:blank"}
         className="w-full h-full"
         title={idea.name}
         style={{ border: "none" }}
