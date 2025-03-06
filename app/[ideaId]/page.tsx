@@ -5,7 +5,6 @@ import { useParams } from "next/navigation";
 import { Idea } from "@/lib/types";
 import { LoadingState } from "./components/loading-state";
 import { ErrorState } from "./components/error-state";
-import { IdeaHeader } from "./components/idea-header";
 import { IdeaDetails } from "./components/idea-details";
 import { IdeaPreview } from "./components/idea-preview";
 import { IdeaHtml } from "./components/idea-html";
@@ -76,32 +75,40 @@ export default function IdeaPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 pb-4">
-      <Link href="/">
-        <Button variant="outline" size="sm" className="mb-4">
-          <ArrowLeft className="mr-2 h-4 w-4" /> Back to Ideas
-        </Button>
-      </Link>
+    <div className="relative">
+      <div className="container mx-auto px-4 py-6 md:py-8">
+        <Link href="/">
+          <Button
+            variant="outline"
+            size="sm"
+            className="mb-8 group hover:bg-primary/5 hover:border-primary/30 transition-all duration-300"
+          >
+            <ArrowLeft className="mr-2 h-4 w-4 group-hover:-translate-x-1 transition-transform duration-300" />
+            Back to Ideas
+          </Button>
+        </Link>
 
-      <Card className="mb-6">
-        <CardHeader className="flex flex-row items-center justify-between">
-          <h1 className="text-2xl font-bold">{idea.name}</h1>
-          <TooltipButton
-            icon={Share2}
-            onClick={handleShareClick}
-            tooltipText="Copy link to clipboard"
-            ariaLabel="Share idea"
-            successText="Link copied!"
-            isSuccess={isShared}
-          />
-        </CardHeader>
-        <CardContent>
-          <IdeaDetails idea={idea} />
-        </CardContent>
-      </Card>
+        <Card className="mb-8 border border-border/50 overflow-hidden relative backdrop-blur-[2px]">
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <h1 className="text-2xl font-bold text-gradient">{idea.name}</h1>
+            <TooltipButton
+              icon={Share2}
+              onClick={handleShareClick}
+              tooltipText="Copy link to clipboard"
+              ariaLabel="Share idea"
+              successText="Link copied!"
+              isSuccess={isShared}
+              className="hover:bg-primary/5 hover:-translate-y-0.5 transition-all duration-300"
+            />
+          </CardHeader>
+          <CardContent>
+            <IdeaDetails idea={idea} />
+          </CardContent>
+        </Card>
 
-      <IdeaPreview idea={idea} ideaId={ideaId} />
-      <IdeaHtml idea={idea} onHtmlChange={handleHtmlChange} />
+        <IdeaPreview idea={idea} ideaId={ideaId} />
+        <IdeaHtml idea={idea} onHtmlChange={handleHtmlChange} />
+      </div>
     </div>
   );
 }

@@ -2,6 +2,7 @@ import { LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useState, useEffect } from "react";
+import { cn } from "@/lib/utils";
 
 interface TooltipButtonProps {
   icon: LucideIcon;
@@ -10,6 +11,7 @@ interface TooltipButtonProps {
   ariaLabel: string;
   successText?: string;
   isSuccess?: boolean;
+  className?: string;
 }
 
 export const TooltipButton = ({
@@ -19,6 +21,7 @@ export const TooltipButton = ({
   ariaLabel,
   successText,
   isSuccess,
+  className,
 }: TooltipButtonProps) => {
   const [open, setOpen] = useState(false);
 
@@ -39,7 +42,7 @@ export const TooltipButton = ({
             size="icon"
             onClick={onClick}
             aria-label={ariaLabel}
-            className="transition-all duration-200"
+            className={cn("transition-all duration-200", className)}
           >
             <Icon className="h-4 w-4" />
           </Button>

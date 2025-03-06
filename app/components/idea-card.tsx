@@ -3,6 +3,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Idea } from "@/lib/types";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import { Sparkles } from "lucide-react";
 
 interface IdeaCardProps {
   idea: Idea & { new?: boolean };
@@ -13,26 +14,29 @@ const IdeaCard = ({ idea }: IdeaCardProps) => {
     <Link href={`/${idea.id}`}>
       <Card
         className={cn(
-          "h-full cursor-pointer hover:shadow-md transition-shadow flex flex-col relative",
-          idea.new && "animate-pulse-subtle border border-primary/30"
+          "h-full cursor-pointer hover:shadow-md transition-shadow duration-300 group flex flex-col relative",
+          idea.new && "animate-pulse-subtle border-primary/40"
         )}
       >
         {idea.new && (
           <Badge
-            className="absolute top-2 right-2 bg-green-500 hover:bg-green-600 text-white"
+            className="absolute top-3 right-3 bg-gradient-to-r from-primary to-[hsl(var(--chart-2))] text-white shadow-sm z-10 transition-all duration-300 group-hover:shadow-md group-hover:-translate-y-0.5"
             aria-label="New idea"
           >
+            <Sparkles className="w-3 h-3 mr-1" />
             NEW
           </Badge>
         )}
         <CardHeader>
-          <CardTitle>{idea.name}</CardTitle>
+          <CardTitle className="group-hover:text-gradient transition-all duration-300">
+            {idea.name}
+          </CardTitle>
         </CardHeader>
         <CardContent className="flex-grow">
           <p className="text-sm text-muted-foreground line-clamp-3">
             <b>Prompt:</b> {idea.prompt}
           </p>
-          <p className="text-sm text-muted-foreground line-clamp-3">
+          <p className="text-sm text-muted-foreground mt-2 line-clamp-3">
             <b>Model:</b> {idea.model}
           </p>
         </CardContent>
