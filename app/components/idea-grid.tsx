@@ -2,7 +2,7 @@ import { Idea } from "@/lib/types";
 import IdeaCard from "./idea-card";
 
 interface IdeasGridProps {
-  ideas: Idea[];
+  ideas: (Idea & { new?: boolean })[];
   isLoading: boolean;
 }
 

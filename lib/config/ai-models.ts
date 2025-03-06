@@ -28,6 +28,7 @@ const AI_MODEL_CONFIGS: Record<AIModel, AIModelConfig> = {
         { role: "user", content: prompt },
       ],
       temperature: 0.7,
+      max_tokens: 16384,
       response_format: { type: "json_object" },
     }),
   },
@@ -43,6 +44,7 @@ const AI_MODEL_CONFIGS: Record<AIModel, AIModelConfig> = {
         { role: "user", content: prompt },
       ],
       temperature: 0.7,
+      max_tokens: 16384,
       response_format: { type: "json_object" },
     }),
   },
@@ -53,7 +55,7 @@ const AI_MODEL_CONFIGS: Record<AIModel, AIModelConfig> = {
     apiKeyEnv: "ANTHROPIC_API_KEY",
     body: (modelId, prompt, systemPrompt) => ({
       model: modelId,
-      max_tokens: 10000,
+      max_tokens: 20000,
       system: systemPrompt,
       messages: [
         {
@@ -71,7 +73,7 @@ const AI_MODEL_CONFIGS: Record<AIModel, AIModelConfig> = {
     apiKeyEnv: "ANTHROPIC_API_KEY",
     body: (modelId, prompt, systemPrompt) => ({
       model: modelId,
-      max_tokens: 10000,
+      max_tokens: 8192,
       system: systemPrompt,
       messages: [
         {

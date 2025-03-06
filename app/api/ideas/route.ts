@@ -30,6 +30,11 @@ export async function POST(req: Request) {
       userId: idea.userId,
       name: idea.name,
       prompt: idea.prompt,
+      usage: idea.usage || {
+        input_tokens: 0,
+        output_tokens: 0,
+        total_tokens: 0,
+      },
       model: idea.model,
       createdAt: idea.createdAt,
       html: idea.html,

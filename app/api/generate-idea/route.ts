@@ -53,7 +53,11 @@ export async function POST(req: Request) {
     }
 
     let ideaText: string;
-    let usage: any;
+    let usage = {
+      input_tokens: 0,
+      output_tokens: 0,
+      total_tokens: 0,
+    };
     const client = SDK_CLIENTS[modelConfig.provider as keyof typeof SDK_CLIENTS];
 
     if (modelConfig.provider === "anthropic") {
@@ -62,8 +66,12 @@ export async function POST(req: Request) {
         modelConfig.body(model, prompt, generateIdeaPrompt) as any
       );
       const contentBlock = completion.content[0];
-      usage = completion.usage;
-      console.log("usage", usage);
+      usage = {
+        input_tokens: completion.usage?.input_tokens || 0,
+        output_tokens: completion.usage?.output_tokens || 0,
+        total_tokens:
+          (completion.usage?.input_tokens || 0) + (completion.usage?.output_tokens || 0),
+      };
       if ("text" in contentBlock) {
         ideaText = contentBlock.text;
       } else {
@@ -75,14 +83,17 @@ export async function POST(req: Request) {
         modelConfig.body(model, prompt, generateIdeaPrompt) as any
       );
       ideaText = completion.choices[0].message.content || "";
-      usage = completion.usage;
-      console.log("usage", usage);
+      usage = {
+        input_tokens: completion.usage?.prompt_tokens || 0,
+        output_tokens: completion.usage?.completion_tokens || 0,
+        total_tokens: completion.usage?.total_tokens || 0,
+      };
     }
 
     try {
       const ideaData = JSON.parse(ideaText);
-      console.log("ideaData", ideaData);
-      return NextResponse.json(ideaData);
+      console.log("generated idea", ideaData, usage);
+      return NextResponse.json({ ideaData, usage });
     } catch (error) {
       console.error("Error parsing JSON response:", error);
       return NextResponse.json({ error: "Failed to parse idea data" }, { status: 500 });

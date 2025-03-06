@@ -11,7 +11,7 @@ import IdeasGrid from "@/app/components/idea-grid";
 import { AI_MODELS } from "@/lib/config/ai-models";
 
 export default function Home() {
-  const [ideas, setIdeas] = useState<Idea[]>([]);
+  const [ideas, setIdeas] = useState<(Idea & { new?: boolean })[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingIdeas, setIsLoadingIdeas] = useState(true);
   const { user } = useUser();
@@ -55,10 +55,11 @@ export default function Home() {
       const newIdea: Idea = {
         id: uuidv4(),
         userId: user?.id || "",
-        name: data.name,
+        name: data.ideaData.name,
         prompt,
+        usage: data.usage,
         model: AI_MODELS.find(m => m.id === model)?.displayName || model,
-        html: data.html,
+        html: data.ideaData.html,
         createdAt: new Date().toISOString(),
       };
 
@@ -74,7 +75,7 @@ export default function Home() {
         throw new Error("Failed to save idea");
       }
 
-      setIdeas(prevIdeas => [newIdea, ...prevIdeas]);
+      setIdeas(prevIdeas => [{ ...newIdea, new: true }, ...prevIdeas]);
     } catch (error) {
       console.error("Error generating idea:", error);
     } finally {

@@ -9,6 +9,11 @@ import { IdeaHeader } from "./components/idea-header";
 import { IdeaDetails } from "./components/idea-details";
 import { IdeaPreview } from "./components/idea-preview";
 import { IdeaHtml } from "./components/idea-html";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import Link from "next/link";
+import { ArrowLeft, Share2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { TooltipButton } from "@/components/tooltip-button";
 
 export default function IdeaPage() {
   const params = useParams();
@@ -16,6 +21,7 @@ export default function IdeaPage() {
   const [idea, setIdea] = useState<Idea | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isShared, setIsShared] = useState(false);
 
   useEffect(() => {
     const fetchIdea = async () => {
@@ -50,6 +56,17 @@ export default function IdeaPage() {
     }
   };
 
+  const handleShareClick = () => {
+    if (typeof window !== "undefined") {
+      navigator.clipboard.writeText(window.location.href);
+      setIsShared(true);
+
+      setTimeout(() => {
+        setIsShared(false);
+      }, 2000);
+    }
+  };
+
   if (isLoading) {
     return <LoadingState />;
   }
@@ -59,9 +76,30 @@ export default function IdeaPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <IdeaHeader idea={idea} />
-      <IdeaDetails idea={idea} />
+    <div className="container mx-auto px-4 pb-4">
+      <Link href="/">
+        <Button variant="outline" size="sm" className="mb-4">
+          <ArrowLeft className="mr-2 h-4 w-4" /> Back to Ideas
+        </Button>
+      </Link>
+
+      <Card className="mb-6">
+        <CardHeader className="flex flex-row items-center justify-between">
+          <h1 className="text-2xl font-bold">{idea.name}</h1>
+          <TooltipButton
+            icon={Share2}
+            onClick={handleShareClick}
+            tooltipText="Copy link to clipboard"
+            ariaLabel="Share idea"
+            successText="Link copied!"
+            isSuccess={isShared}
+          />
+        </CardHeader>
+        <CardContent>
+          <IdeaDetails idea={idea} />
+        </CardContent>
+      </Card>
+
       <IdeaPreview idea={idea} ideaId={ideaId} />
       <IdeaHtml idea={idea} onHtmlChange={handleHtmlChange} />
     </div>

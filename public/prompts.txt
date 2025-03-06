@@ -1,3 +1,5 @@
 Create an iteractive periodic table off all the elements where users can hover elements to see properties and animations for atomic structure. Use html, js and css.
 
 Make it visually appealing.
+
+In a standalone html page, using three.js, create a 3D simulation of an intricate futuristic city with skyscrapers and highways. Make the design and visuals look amazing. Focus on creating buildings and highways to make it look like the real city model. Include sliders for day/night and other effects. Be creative. Do not use any other dependencies.
