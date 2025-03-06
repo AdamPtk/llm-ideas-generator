@@ -25,4 +25,6 @@ Return your response as a JSON object with the following structure:
 {
     "name": "Idea Name",
     "html": "Complete HTML including CSS and JavaScript"
-}`;
+}
+
+IMPORTANT: Start and end with a JSON block: { ... } DO NOT include any other text or formatting.`;

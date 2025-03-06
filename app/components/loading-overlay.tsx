@@ -7,6 +7,8 @@ const loadingMessages = [
   "Assembling the pieces...",
   "Making it awesome...",
   "Almost there...",
+  "Some models can take a while to generate...",
+  "This might take a few seconds...",
 ];
 
 interface LoadingOverlayProps {

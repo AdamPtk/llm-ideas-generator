@@ -8,8 +8,7 @@ import { Idea } from "@/lib/types";
 import LoadingOverlay from "@/app/components/loading-overlay";
 import IdeaForm from "@/app/components/idea-form";
 import IdeasGrid from "@/app/components/idea-grid";
-import { AIModel } from "@/lib/config/ai-models";
-import { MODEL_CONFIGS } from "@/lib/config/ai-models";
+import { AI_MODELS } from "@/lib/config/ai-models";
 
 export default function Home() {
   const [ideas, setIdeas] = useState<Idea[]>([]);
@@ -58,7 +57,7 @@ export default function Home() {
         userId: user?.id || "",
         name: data.name,
         prompt,
-        model: MODEL_CONFIGS[model as AIModel]?.displayName || model,
+        model: AI_MODELS.find(m => m.id === model)?.displayName || model,
         html: data.html,
         createdAt: new Date().toISOString(),
       };

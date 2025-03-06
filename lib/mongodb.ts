@@ -26,12 +26,17 @@ async function connectDB() {
     return cached.conn;
   }
 
+  if (!MONGODB_URI) {
+    throw new Error("Please define the MONGODB_URI environment variable");
+  }
+
   if (!cached.promise) {
     const opts = {
-      bufferCommands: false,
+      bufferCommands: true,
     };
 
     cached.promise = mongoose.connect(MONGODB_URI, opts).then(mongoose => {
+      console.log("Connected to MongoDB");
       return mongoose;
     });
   }
@@ -40,6 +45,7 @@ async function connectDB() {
     cached.conn = await cached.promise;
   } catch (e) {
     cached.promise = null;
+    console.error("Error connecting to MongoDB:", e);
     throw e;
   }
 

@@ -1,4 +1,5 @@
 import OpenAI from "openai";
+import Anthropic from "@anthropic-ai/sdk";
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 
@@ -14,9 +15,14 @@ const deepseek = new OpenAI({
   apiKey: process.env.DEEPSEEK_API_KEY,
 });
 
+const anthropic = new Anthropic({
+  apiKey: process.env.ANTHROPIC_API_KEY,
+});
+
 const SDK_CLIENTS = {
   openai,
   deepseek,
+  anthropic,
 } as const;
 
 export async function POST(req: Request) {
@@ -47,27 +53,30 @@ export async function POST(req: Request) {
     }
 
     let ideaText: string;
+    let usage: any;
+    const client = SDK_CLIENTS[modelConfig.provider as keyof typeof SDK_CLIENTS];
 
-    if (modelConfig.useSDK) {
-      const client = SDK_CLIENTS[modelConfig.provider as keyof typeof SDK_CLIENTS];
-
-      const completion = await client.chat.completions.create(
+    if (modelConfig.provider === "anthropic") {
+      const anthropicClient = client as Anthropic;
+      const completion = await anthropicClient.messages.create(
+        modelConfig.body(model, prompt, generateIdeaPrompt) as any
+      );
+      const contentBlock = completion.content[0];
+      usage = completion.usage;
+      console.log("usage", usage);
+      if ("text" in contentBlock) {
+        ideaText = contentBlock.text;
+      } else {
+        throw new Error("Unexpected response format from Anthropic");
+      }
+    } else {
+      const openAIClient = client as OpenAI;
+      const completion = await openAIClient.chat.completions.create(
         modelConfig.body(model, prompt, generateIdeaPrompt) as any
       );
       ideaText = completion.choices[0].message.content || "";
-    } else {
-      const response = await fetch(modelConfig.baseEndpoint, {
-        method: "POST",
-        headers: modelConfig.headers(apiKey),
-        body: JSON.stringify(modelConfig.body(model, prompt, generateIdeaPrompt)),
-      });
-
-      if (!response.ok) {
-        throw new Error(`Failed to generate idea with ${modelConfig.displayName}`);
-      }
-
-      const data = await response.json();
-      ideaText = modelConfig.responseParser(data);
+      usage = completion.usage;
+      console.log("usage", usage);
     }
 
     try {
