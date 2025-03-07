@@ -48,7 +48,7 @@ const IdeaForm = ({ onSubmit, isLoading }: IdeaFormProps) => {
   };
 
   return (
-    <Card className="mb-8 border border-border/50 overflow-hidden relative">
+    <Card className="mb-8 border border-border/50 overflow-hidden relative w-full">
       <CardHeader className="pb-0">
         <CardTitle className="flex items-center gap-2 text-gradient">
           <Sparkles className="h-5 w-5 text-primary" />
@@ -61,7 +61,7 @@ const IdeaForm = ({ onSubmit, isLoading }: IdeaFormProps) => {
           <ClerkLoading>
             <CardContent className="mt-6 space-y-6">
               <Skeleton className="h-10 w-full" />
-              <Skeleton className="h-36 w-full" />
+              <Skeleton className="h-28 w-full" />
             </CardContent>
             <CardFooter>
               <Skeleton className="h-10 w-full" />

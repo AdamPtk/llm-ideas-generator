@@ -32,7 +32,7 @@ export const ErrorState = ({ error }: ErrorStateProps) => {
             <div className="absolute inset-0 bg-primary/40 rounded-full blur-2xl animate-pulse-subtle"></div>
           </div>
 
-          <h1 className="text-2xl font-bold mb-4 text-gradient">Idea Not Found</h1>
+          <h1 className="text-2xl font-bold mb-4 text-primary">Idea Not Found</h1>
           <p className="mb-8 text-muted-foreground">
             {error || "Sorry, we couldn't find the idea you're looking for."}
           </p>

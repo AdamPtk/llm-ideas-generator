@@ -13,7 +13,7 @@ export const LoadingState = () => {
           <Sparkles className="h-16 w-16 text-primary animate-float" />
           <div className="absolute inset-0 bg-primary/40 rounded-full blur-2xl animate-pulse-subtle"></div>
         </div>
-        <h2 className="text-xl font-bold text-gradient mb-2">Loading Idea</h2>
+        <h2 className="text-xl font-bold text-primary mb-2">Loading Idea</h2>
         <p className="text-muted-foreground">
           Just a moment while we retrieve your brilliant idea...
         </p>

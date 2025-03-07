@@ -90,7 +90,7 @@ export default function IdeaPage() {
 
         <Card className="mb-8 border border-border/50 overflow-hidden relative backdrop-blur-[2px]">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <h1 className="text-2xl font-bold text-gradient">{idea.name}</h1>
+            <h1 className="text-2xl font-bold text-primary">{idea.name}</h1>
             <TooltipButton
               icon={Share2}
               onClick={handleShareClick}
